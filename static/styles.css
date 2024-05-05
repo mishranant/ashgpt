@@ -1,0 +1,19 @@
+div#conversation {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.user-message, .bot-message {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+.user-message {
+    text-align: right;
+    background-color: #e0e0e0;
+}
+
+.bot-message {
+    text-align: left;
+    background-color: #f0f0f0;
+}

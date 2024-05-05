@@ -1,0 +1,31 @@
+<form id="chat-form">
+    <textarea name="prompt" id="prompt" placeholder="Enter your message..."></textarea>
+    <input type="submit" value="Send">
+</form>
+<div id="conversation"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var form = document.getElementById('chat-form');
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        var prompt = document.getElementById('prompt').value;
+        var conversationDiv = document.getElementById('conversation');
+        conversationDiv.innerHTML += '<div class="user-message">' + prompt + '</div>';
+
+        fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({message: prompt}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            conversationDiv.innerHTML += '<div class="bot-message">' + data.message + '</div>';
+            document.getElementById('prompt').value = ''; // Clear input field
+            conversationDiv.scrollTop = conversationDiv.scrollHeight; // Scroll to the bottom
+        });
+    };
+});
+</script>

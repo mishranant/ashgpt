@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Clone</title>
+</head>
+<body>
+    <h1>Chat with GPT</h1>
+    <div id="chatbox">
+        <textarea id="chat" cols="150" rows="40" readonly></textarea><br>
+        <textarea id="input" cols="150" rows="5" placeholder="Say something..."></textarea><br>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        const chat = document.getElementById('chat');
+        const input = document.getElementById('input');
+
+        function appendMessage(user, text) {
+            chat.value += ('@' + user + '@' + ': ' + text + '\n\n');
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function sendMessage() {
+            const message = input.value;
+            input.value = '';
+            appendMessage('You', message);
+            fetch('/send_message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                appendMessage('ChatGPT', data.answer);
+            });
+        }
+    </script>
+</body>
+</html>
